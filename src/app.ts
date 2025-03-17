@@ -6,7 +6,7 @@ export default async function app(
 ) {
 	fastify.get("/", () => {
 		return {
-			hello: "word"
+			hello: "world"
 		}
 	})
 }
