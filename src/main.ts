@@ -1,52 +1,71 @@
-// ESM
-import Fastify from 'fastify'
+/**
+ * 이 파일은 애플리케이션을 독립 실행형으로 실행하려는 경우에만 사용됩니다.
+ *
+ * `npm run standalone` 명령어로 실행할 수 있습니다.
+ */
 
+import Fastify from 'fastify' // Fastify 프레임워크를 가져옵니다.
+import fp from 'fastify-plugin' // Fastify 플러그인 유틸리티를 가져옵니다.
+import closeWithGrace from 'close-with-grace' // Fastify 프로세스를 가능한 한 우아하게 종료하기 위한 라이브러리를 가져옵니다.
+import app from './app.js' // 애플리케이션을 일반 플러그인으로 가져옵니다.
 
-function getLoggerOptions () {
-  // 프로그램이 대화형 터미널에서 실행 중인 경우에만
+/**
+ * NODE_ENV를 사용하여 로거(또는 환경 관련 기능)를 결정하지 마십시오.
+ * @see {@link https://www.youtube.com/watch?v=HMM7GJC5E2o}
+ */
+function getLoggerOptions() {
   if (process.stdout.isTTY) {
     return {
-      level: 'info', // 로그 레벨을 'info'로 설정
+      level: 'info',
       transport: {
-        target: 'pino-pretty', // 로그 형식을 위해 'pino-pretty' 사용
+        target: 'pino-pretty',
         options: {
-          translateTime: 'HH:MM:ss Z', // 로그 타임스탬프 형식 지정
-          ignore: 'pid,hostname' // 로그에서 프로세스 ID와 호스트 이름 무시
+          translateTime: 'HH:MM:ss Z',
+          ignore: 'pid,hostname'
         }
       }
     }
   }
-
-  // 대화형 터미널이 아닌 경우 기본 로그 레벨을 'silent'로 설정
   return { level: process.env.LOG_LEVEL ?? 'silent' }
 }
 
-const fastify = Fastify({
-  logger: getLoggerOptions(),
-  ajv: {
-    customOptions: {
-      coerceTypes: 'array', // 데이터 유형을 키워드 유형에 맞게 변경
-      removeAdditional: 'all' // 추가 본문 속성 제거
+function createServer() {
+  return Fastify({
+    logger: getLoggerOptions(),
+    ajv: {
+      customOptions: {
+        coerceTypes: 'array',
+        removeAdditional: 'all'
+      }
     }
-  }
-})
+  })
+}
 
-fastify.get('/', async (request, reply) => {
-  return { hello: 'world' }
-})
-
-/**
- * Run the server!
- */
-const start = async () => {
+async function startServer(server: Fastify.FastifyInstance) {
   try {
-    await fastify.listen({ 
-		port: process.env.PORT|| 3000 
-	})
+    await server.listen({ port: process.env.PORT ?? 3000 })
   } catch (err) {
-    fastify.log.error(err)
+    server.log.error(err)
     process.exit(1)
   }
 }
 
-start()
+async function init() {
+  const server = createServer()
+  server.register(fp(app))
+
+  closeWithGrace(
+    { delay: process.env.FASTIFY_CLOSE_GRACE_DELAY ?? 500 },
+    async ({ err }) => {
+      if (err != null) {
+        server.log.error(err)
+      }
+      await server.close()
+    }
+  )
+
+  await server.ready()
+  await startServer(server)
+}
+
+init()
