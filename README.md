@@ -1,1 +1,1 @@
-# fastify_boilerplate
+# fastify-boilerplate
