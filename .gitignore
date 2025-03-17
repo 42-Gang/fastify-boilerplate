@@ -142,3 +142,5 @@ yarn.lock
 
 # uploaded files
 uploads/tasks/*
+
+.DS_Store
