@@ -52,7 +52,7 @@ async function startServer(server: Fastify.FastifyInstance) {
 
 async function init() {
   const server = createServer()
-  server.register(fp(app))
+  server.register(app, { prefix:'/api' })
 
   closeWithGrace(
     { delay: process.env.FASTIFY_CLOSE_GRACE_DELAY ?? 500 },
