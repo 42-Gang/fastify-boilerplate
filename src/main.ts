@@ -1,7 +1,8 @@
 import Fastify from 'fastify';
 import closeWithGrace from 'close-with-grace';
-import app from './app.js';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+
+import app from './app.js';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {

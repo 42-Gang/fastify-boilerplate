@@ -1,5 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 export async function findUserController(request: FastifyRequest, reply: FastifyReply) {
-	reply.code(200).send("hello")
+  reply.code(200).send('hello');
 }
