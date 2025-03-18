@@ -45,6 +45,7 @@ async function init() {
   const server = createServer();
   server.setValidatorCompiler(validatorCompiler);
   server.setSerializerCompiler(serializerCompiler);
+  server.withTypeProvider<ZodTypeProvider>();
 
   server.register(app, { prefix: '/api' });
 
