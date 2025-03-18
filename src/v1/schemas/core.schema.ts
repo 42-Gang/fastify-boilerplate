@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { STATUS } from '../constants/status.js';
 
 // Common error schema
 const errorSchema = z.object({
@@ -7,9 +8,10 @@ const errorSchema = z.object({
 });
 
 // Common response schema
-export const coreResponseSchema = z.object({
-  status: z.enum(['SUCCES', 'ERROR']),
-  message: z.string(),
-  data: z.any().optional(),
-  errors: z.array(errorSchema).optional(),
-});
+export const createResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
+  z.object({
+    status: z.enum([STATUS.SUCCESS, STATUS.ERROR]),
+    message: z.string(),
+    data: dataSchema.optional(),
+    errors: z.array(errorSchema).optional(),
+  });

@@ -1,3 +1,7 @@
+import { z } from 'zod';
+import { loginRequestSchema, loginResponseSchema } from '../schemas/auth.schema.js';
+import { STATUS } from '../constants/status.js';
+
 export async function signupService(data: any) {
   return {
     status: 'success',
@@ -9,15 +13,14 @@ export async function signupService(data: any) {
     },
   };
 }
-
-export async function loginService(data: any) {
+export async function loginService(
+  data: z.infer<typeof loginRequestSchema>,
+): Promise<z.infer<typeof loginResponseSchema>> {
   return {
-    status: 'success',
-    code: 200,
+    status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
     data: {
-      nickname: 'JohnDoe',
-      avatar: 'https://example.com/avatar.jpg',
+      accessToken: 'tmp-access-token',
     },
   };
 }

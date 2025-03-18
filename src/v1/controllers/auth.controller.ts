@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { signupService, loginService } from '../services/auth.service.js';
+import { loginRequestSchema, loginResponseSchema } from '../schemas/auth.schema.js';
+import { z } from 'zod';
 
 export async function signupController(request: FastifyRequest, reply: FastifyReply) {
   try {
@@ -11,11 +13,18 @@ export async function signupController(request: FastifyRequest, reply: FastifyRe
   }
 }
 
-export async function loginController(request: FastifyRequest, reply: FastifyReply) {
+export async function loginController(
+  request: FastifyRequest<{
+    Body: z.infer<typeof loginRequestSchema>;
+  }>,
+  reply: FastifyReply,
+) {
   try {
     const result = await loginService(request.body);
-    reply.status(200).send(result);
+    const validatedResponse = loginResponseSchema.parse(result);
+
+    reply.status(200).send(validatedResponse);
   } catch (error) {
-    // reply.status(401).send({ error: error.message });
+    reply.status(401).send({ error });
   }
 }
