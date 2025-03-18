@@ -1,15 +1,27 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { signupService, loginService } from '../services/auth.service.js';
-import { loginRequestSchema, loginResponseSchema } from '../schemas/auth.schema.js';
+import {
+  loginRequestSchema,
+  loginResponseSchema,
+  signupRequestSchema,
+  signupResponseSchema,
+} from '../schemas/auth.schema.js';
 import { z } from 'zod';
 
-export async function signupController(request: FastifyRequest, reply: FastifyReply) {
+export async function signupController(
+  request: FastifyRequest<{
+    Body: z.infer<typeof signupRequestSchema>;
+  }>,
+  reply: FastifyReply,
+) {
   try {
     const result = await signupService(request.body);
-    reply.status(201).send(result);
+    const validatedResponse = signupResponseSchema.parse(result);
+
+    reply.status(201).send(validatedResponse);
   } catch (error) {
-    // reply.status(400).send({ error: error.message });
+    reply.status(400).send({ error });
   }
 }
 
