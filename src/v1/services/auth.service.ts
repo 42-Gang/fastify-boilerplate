@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { FastifyBaseLogger } from 'fastify';
+
 import {
   loginRequestSchema,
   loginResponseSchema,
@@ -9,7 +11,10 @@ import { STATUS } from '../constants/status.js';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
+  logger: FastifyBaseLogger,
 ): Promise<z.infer<typeof signupResponseSchema>> {
+  logger.info('data', data);
+
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
@@ -17,7 +22,10 @@ export async function signupService(
 }
 export async function loginService(
   data: z.infer<typeof loginRequestSchema>,
+  logger: FastifyBaseLogger,
 ): Promise<z.infer<typeof loginResponseSchema>> {
+  logger.info('data', data);
+
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',

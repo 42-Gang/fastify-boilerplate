@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { createResponseSchema } from './core.schema.js';
 
 export const loginRequestSchema = z.object({

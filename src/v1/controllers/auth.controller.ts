@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { signupService, loginService } from '../services/auth.service.js';
@@ -7,7 +8,6 @@ import {
   signupRequestSchema,
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
-import { z } from 'zod';
 
 export async function signupController(
   request: FastifyRequest<{
@@ -16,7 +16,7 @@ export async function signupController(
   reply: FastifyReply,
 ) {
   try {
-    const result = await signupService(request.body);
+    const result = await signupService(request.body, request.log);
     const validatedResponse = signupResponseSchema.parse(result);
 
     reply.status(201).send(validatedResponse);
@@ -32,7 +32,7 @@ export async function loginController(
   reply: FastifyReply,
 ) {
   try {
-    const result = await loginService(request.body);
+    const result = await loginService(request.body, request.log);
     const validatedResponse = loginResponseSchema.parse(result);
 
     reply.status(200).send(validatedResponse);
