@@ -1,12 +1,7 @@
-import { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import { FastifyInstance } from 'fastify';
 
-export default async function app(
-	fastify: FastifyInstance,
-	opts: FastifyPluginOptions
-) {
-	fastify.get("/", () => {
-		return {
-			hello: "world"
-		}
-	})
+import routeV1 from './v1/index.js';
+
+export default async function app(fastify: FastifyInstance) {
+  fastify.register(routeV1, { prefix: '/v1' });
 }
