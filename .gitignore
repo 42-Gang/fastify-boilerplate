@@ -144,3 +144,4 @@ yarn.lock
 uploads/tasks/*
 
 .DS_Store
+.gitmessage.txt
