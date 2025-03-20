@@ -7,6 +7,7 @@ export default async function usersRoutes(fastify: FastifyInstance) {
   fastify.get(
     '/:id',
     {
+      preHandler: fastify.authenticate,
       schema: {
         params: getUserParamsSchema,
       },
