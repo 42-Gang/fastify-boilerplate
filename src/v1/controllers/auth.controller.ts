@@ -2,11 +2,7 @@ import { z } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { signupService, loginService } from '../services/auth.service.js';
-import {
-  loginRequestSchema,
-  loginResponseSchema,
-  signupRequestSchema,
-} from '../schemas/auth.schema.js';
+import { loginRequestSchema, signupRequestSchema } from '../schemas/auth.schema.js';
 
 export async function signupController(
   request: FastifyRequest<{

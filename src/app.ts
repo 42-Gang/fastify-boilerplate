@@ -11,8 +11,8 @@ export default async function app(fastify: FastifyInstance) {
 
     const statusCode: number = error.statusCode || 500;
     reply.code(statusCode).send({
-      "status": STATUS.ERROR,
-      "message": error.message,
+      status: STATUS.ERROR,
+      message: error.message,
     });
   });
 
