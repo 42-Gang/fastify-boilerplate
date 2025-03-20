@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { FastifyBaseLogger } from 'fastify';
 
+import prisma from '../utils/prisma.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
@@ -15,11 +16,23 @@ export async function signupService(
 ): Promise<z.infer<typeof signupResponseSchema>> {
   logger.info('data', data);
 
+  const newUser = await prisma.user.create({
+    data: {
+      nickname: data.name,
+      email: data.email,
+      password_hash: data.password,
+      two_factor_enabled: false,
+    },
+  });
+
+  logger.info('New user created', newUser);
+
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
   };
 }
+
 export async function loginService(
   data: z.infer<typeof loginRequestSchema>,
   logger: FastifyBaseLogger,
