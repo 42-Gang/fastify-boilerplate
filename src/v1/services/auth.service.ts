@@ -22,8 +22,6 @@ export async function signupService(
       email: data.email,
       password_hash: data.password,
       two_factor_enabled: false,
-      created_at: new Date(),
-      updated_at: new Date(),
     },
   });
 
