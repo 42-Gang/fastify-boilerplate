@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { createResponseSchema } from './core.schema.js';
 
+// login request schema
 export const loginRequestSchema = z.object({
   email: z
     .string({
@@ -15,12 +16,15 @@ export const loginRequestSchema = z.object({
   }),
 });
 
+// login response schema
+
 export const loginResponseSchema = createResponseSchema(
   z.object({
     accessToken: z.string(),
   }),
 );
 
+// signup request schema
 export const signupRequestSchema = z.object({
   email: z
     .string({
@@ -41,4 +45,5 @@ export const signupRequestSchema = z.object({
   }),
 });
 
+// signup response schema
 export const signupResponseSchema = createResponseSchema(z.any());
