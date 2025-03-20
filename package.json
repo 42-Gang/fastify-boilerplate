@@ -12,7 +12,8 @@
     "clean": "rm -rf dist",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "test": "jest --rootDir=src"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
