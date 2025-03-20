@@ -9,6 +9,7 @@ import {
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
 import { STATUS } from '../constants/status.js';
+import { JWT } from '@fastify/jwt';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
@@ -36,6 +37,7 @@ export async function signupService(
 export async function loginService(
   data: z.infer<typeof loginRequestSchema>,
   logger: FastifyBaseLogger,
+  jwt: JWT
 ): Promise<z.infer<typeof loginResponseSchema>> {
   logger.info('data', data);
 
@@ -43,7 +45,7 @@ export async function loginService(
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
     data: {
-      accessToken: 'tmp-access-token',
+      accessToken: jwt.sign({ email: data.email }),
     },
   };
 }
