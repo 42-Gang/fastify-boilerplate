@@ -7,7 +7,7 @@ import {
   signupRequestSchema,
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
-import { STATUS } from '../constants/status.ts';
+import { STATUS } from '../constants/status.js';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
