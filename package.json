@@ -12,7 +12,13 @@
     "build:ts": "tsc",
     "clean": "rm -rf dist",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init && prisma generate",
+    "prisma:reset": "prisma migrate reset --force && prisma generate",
+    "prisma:deploy": "prisma migrate deploy && prisma generate",
+    "prisma:seed": "prisma db seed"
   },
   "author": "",
   "license": "ISC",
