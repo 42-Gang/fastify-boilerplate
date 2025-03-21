@@ -2,18 +2,21 @@ import { FastifyInstance } from 'fastify';
 
 import { findUserController } from '../controllers/users.controller.js';
 import { getUserParamsSchema } from '../schemas/user.schema.js';
+import { addRoutes, Route } from '../utils/router.js';
 
 export default async function usersRoutes(fastify: FastifyInstance) {
-  fastify.get<{
-    Params: { id: string };
-  }>(
-    '/:id',
+  const routes: Array<Route> = [
     {
-      preHandler: [fastify.authenticate],
-      schema: {
-        params: getUserParamsSchema,
+      method: 'GET',
+      url: '/:id',
+      handler: findUserController,
+      options: {
+        schema: {
+          params: getUserParamsSchema,
+        },
+        auth: true,
       },
     },
-    findUserController,
-  );
+  ];
+  addRoutes(fastify, routes);
 }

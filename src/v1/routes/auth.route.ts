@@ -7,33 +7,36 @@ import {
   signupRequestSchema,
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
+import { addRoutes, Route } from '../utils/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
-  // Signup route
-  fastify.post(
-    '/',
+  const routes: Array<Route> = [
     {
-      schema: {
-        body: signupRequestSchema,
-        response: {
-          201: signupResponseSchema,
+      method: 'POST',
+      url: '/',
+      handler: signupController,
+      options: {
+        schema: {
+          body: signupRequestSchema,
+          response: {
+            201: signupResponseSchema,
+          },
         },
       },
     },
-    signupController,
-  );
-
-  // Login route
-  fastify.post(
-    '/login',
     {
-      schema: {
-        body: loginRequestSchema,
-        response: {
-          201: loginResponseSchema,
+      method: 'POST',
+      url: '/login',
+      handler: loginController,
+      options: {
+        schema: {
+          body: loginRequestSchema,
+          response: {
+            201: loginResponseSchema,
+          },
         },
       },
     },
-    loginController,
-  );
+  ];
+  addRoutes(fastify, routes);
 }
