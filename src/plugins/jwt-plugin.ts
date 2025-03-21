@@ -10,10 +10,9 @@ const jwtPlugin = async (fastify: FastifyInstance) => {
     },
   });
 
-  fastify.addHook('preHandler', (request: any, reply: any, next: any) => {
+  fastify.addHook('preHandler', async (request: FastifyRequest) => {
     request.jwt = fastify.jwt;
-    next();
-  })
+  });
 
   fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
     try {

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { FastifyBaseLogger } from 'fastify';
+import { JWT } from '@fastify/jwt';
 
 import prisma from '../utils/prisma.js';
 import {
@@ -9,7 +10,6 @@ import {
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
 import { STATUS } from '../constants/status.js';
-import { JWT } from '@fastify/jwt';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
@@ -37,7 +37,7 @@ export async function signupService(
 export async function loginService(
   data: z.infer<typeof loginRequestSchema>,
   logger: FastifyBaseLogger,
-  jwt: JWT
+  jwt: JWT,
 ): Promise<z.infer<typeof loginResponseSchema>> {
   logger.info('data', data);
 
