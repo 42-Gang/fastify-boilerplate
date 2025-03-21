@@ -1,6 +1,8 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyInstance, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import fastifyJwt from '@fastify/jwt';
+
+import { UnAuthorizedException } from '../v1/exceptions/core.error';
 
 const jwtPlugin = async (fastify: FastifyInstance) => {
   fastify.register(fastifyJwt, {
@@ -14,12 +16,12 @@ const jwtPlugin = async (fastify: FastifyInstance) => {
     request.jwt = fastify.jwt;
   });
 
-  fastify.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.decorate('authenticate', async (request: FastifyRequest) => {
     try {
       await request.jwtVerify();
-      // request.jwt.
     } catch (err) {
-      reply.send(err);
+      request.log.error(err);
+      throw new UnAuthorizedException('Invalid token');
     }
   });
 };

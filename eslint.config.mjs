@@ -32,6 +32,14 @@ export default [
       'prettier/prettier': 'error', // Prettier 규칙 적용
       indent: 'off', // Prettier가 관리하도록 Indent 규칙 비활성화
       '@typescript-eslint/indent': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrors: 'all',
+        },
+      ],
     },
     settings: {
       'import/resolver': {
