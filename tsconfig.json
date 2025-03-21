@@ -12,6 +12,7 @@
 	},
 	"include": [
 		"@types",
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"src/**/*.d.ts"
 	]
 }

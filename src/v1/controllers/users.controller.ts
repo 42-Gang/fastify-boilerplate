@@ -11,8 +11,9 @@ export async function findUserController(
   reply: FastifyReply,
 ) {
   const id = parseInt(request.params.id);
+  const user = request.me;
 
-  if (request.user.id !== id) {
+  if (user.id !== id) {
     throw new ForbiddenException('You are not authorized to view this user');
   }
 

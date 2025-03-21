@@ -8,10 +8,10 @@ const errorSchema = z.object({
   message: z.string(),
 });
 
-// Common response schema
+// Common response schema factory
 export const createResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
   z.object({
-    status: z.enum([STATUS.SUCCESS, STATUS.ERROR]),
+    status: z.nativeEnum(STATUS),
     message: z.string(),
     data: dataSchema.optional(),
     errors: z.array(errorSchema).optional(),

@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyInstance, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import fastifyJwt from '@fastify/jwt';
 
@@ -8,9 +8,7 @@ import prisma from '../utils/prisma.js';
 const jwtPlugin = async (fastify: FastifyInstance) => {
   fastify.register(fastifyJwt, {
     secret: 'supersecret',
-    sign: {
-      expiresIn: '5m',
-    },
+    sign: { expiresIn: '5m' },
   });
 
   fastify.addHook('preHandler', async (request: FastifyRequest) => {
@@ -18,39 +16,60 @@ const jwtPlugin = async (fastify: FastifyInstance) => {
   });
 
   fastify.decorate('authenticate', async (request: FastifyRequest) => {
-    if (!request.headers.authorization) {
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader) {
       request.authorized = false;
       return;
     }
 
-    const token = request.headers.authorization.split(' ')[1];
-    try {
-      await request.jwtVerify();
-    } catch (err) {
-      request.log.error(err);
-      throw new UnAuthorizedException('Invalid token');
-    }
+    const token = extractToken(authHeader);
+    await verifyToken(request);
+
+    const payload = decodeToken(request, token);
+    const user = await fetchUser(payload.id);
 
     request.authorized = true;
-    const payload = request.jwt.decode(token);
-    if (!payload) {
-      throw new UnAuthorizedException('Invalid token');
-    }
-
-    const userId = (payload as { id: number }).id;
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-
-    if (!user) {
-      throw new UnAuthorizedException('Invalid token');
-    }
-
-    request.user = user;
+    request.me = user;
   });
 };
+
+// Extract token from the Authorization header
+function extractToken(authHeader: string): string {
+  return authHeader.split(' ')[1];
+}
+
+// Verify the token using Fastify's JWT plugin
+async function verifyToken(request: FastifyRequest): Promise<void> {
+  try {
+    await request.jwtVerify();
+  } catch (err) {
+    request.log.error(err);
+    throw new UnAuthorizedException('Invalid token');
+  }
+}
+
+// Decode the token and validate its payload
+function decodeToken(request: FastifyRequest, token: string): { id: number } {
+  const payload = request.jwt.decode(token);
+  if (!isValidPayload(payload)) {
+    throw new UnAuthorizedException('Invalid token');
+  }
+  return payload;
+}
+
+// Validate the payload structure
+function isValidPayload(payload: unknown): payload is { id: number } {
+  return payload !== null && typeof payload === 'object' && 'id' in payload;
+}
+
+// Fetch the user from the database by ID
+async function fetchUser(userId: number) {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    throw new UnAuthorizedException('Invalid token');
+  }
+  return user;
+}
 
 export default fp(jwtPlugin);

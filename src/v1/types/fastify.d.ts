@@ -1,6 +1,7 @@
-import { JWT } from '@fastify/jwt';
 import 'fastify';
-import { User } from '../models/users.model.ts';
+
+import { User } from '@prisma/client';
+import { JWT } from '@fastify/jwt';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -10,6 +11,6 @@ declare module 'fastify' {
   interface FastifyRequest {
     jwt: JWT;
     authorized: boolean;
-    user: User;
+    me: User;
   }
 }

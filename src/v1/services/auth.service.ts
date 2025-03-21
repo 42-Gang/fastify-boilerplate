@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { FastifyBaseLogger } from 'fastify';
 import { JWT } from '@fastify/jwt';
+import { v4 as uuidv4 } from 'uuid';
 
 import prisma from '../utils/prisma.js';
 import {
@@ -10,7 +11,6 @@ import {
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
 import { STATUS } from '../constants/status.js';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
