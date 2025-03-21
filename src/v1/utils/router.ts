@@ -1,4 +1,4 @@
-import { RouteShorthandOptions } from 'fastify';
+import { RouteShorthandOptions, RouteHandlerMethod } from 'fastify';
 import { FastifyInstance } from 'fastify/types/instance.js';
 
 // 권한 필요 여부를 표현할 때 추가 옵션 타입 확장
@@ -10,7 +10,7 @@ interface RouteOptions extends RouteShorthandOptions {
 export interface Route {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   url: string;
-  handler: any;
+  handler: RouteHandlerMethod;
   options: RouteOptions;
 }
 
