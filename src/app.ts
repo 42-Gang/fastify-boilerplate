@@ -1,6 +1,7 @@
 import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import routeV1 from './v1/index.js';
+import swaggerPlugin from './plugins/swagger-plugin.js';
 import { STATUS } from './v1/constants/status.js';
 
 export default async function app(fastify: FastifyInstance) {
@@ -16,5 +17,6 @@ export default async function app(fastify: FastifyInstance) {
     });
   });
 
+  await fastify.register(swaggerPlugin);
   fastify.register(routeV1, { prefix: '/v1' });
 }

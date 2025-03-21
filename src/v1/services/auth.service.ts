@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { FastifyBaseLogger } from 'fastify';
 
-import prisma from '../utils/prisma.js';
+import prisma from '../../plugins/prisma.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
