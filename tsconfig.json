@@ -1,14 +1,17 @@
 {
-  "extends": "fastify-tsconfig",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "./",
-    "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"],
-    },
-    "noEmit": true,
-    "allowImportingTsExtensions": true
-  },
-  "include": ["@types", "src/**/*.ts"]
+	"extends": "fastify-tsconfig",
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "./",
+		"baseUrl": "./",
+		"paths": {
+			"@src/*": [
+				"src/*"
+			],
+		},
+	},
+	"include": [
+		"@types",
+		"src/**/*.ts"
+	]
 }

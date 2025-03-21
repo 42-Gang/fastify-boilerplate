@@ -4,10 +4,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "npm run build:ts && dotenv -e .env -- node dist/main.js",
+    "start": "npm run build:ts && dotenv -e .env -- node dist/src/main.js",
     "dev": "tsx watch src/main.ts",
-    "run:ts": "tsx src/main.ts",
-    "watch:ts": "tsx watch src/main.ts",
     "build:ts": "tsc",
     "clean": "rm -rf dist",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",

@@ -40,11 +40,23 @@ export async function loginService(
   logger: FastifyBaseLogger,
   jwt: JWT,
 ): Promise<z.infer<typeof loginResponseSchema>> {
+  const foundUser = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+  if (!foundUser) {
+    return {
+      status: STATUS.ERROR,
+      message: 'User not found',
+    };
+  }
+
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
     data: {
-      accessToken: jwt.sign({ email: data.email }),
+      accessToken: jwt.sign({ id: foundUser.id, email: foundUser.email }),
     },
   };
 }

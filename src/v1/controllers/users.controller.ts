@@ -12,9 +12,9 @@ export async function findUserController(
 ) {
   const id = parseInt(request.params.id);
 
-  request.log.info(`user id: ${id}`);
-  if (id === 1) {
-    throw new ForbiddenException("You can't access this user");
+  if (request.user.id !== id) {
+    throw new ForbiddenException('You are not authorized to view this user');
   }
+
   reply.code(200).send('hello');
 }
