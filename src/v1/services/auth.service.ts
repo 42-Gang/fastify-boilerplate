@@ -10,6 +10,7 @@ import {
   signupResponseSchema,
 } from '../schemas/auth.schema.js';
 import { STATUS } from '../constants/status.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
@@ -39,8 +40,6 @@ export async function loginService(
   logger: FastifyBaseLogger,
   jwt: JWT,
 ): Promise<z.infer<typeof loginResponseSchema>> {
-  logger.info('data', data);
-
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
@@ -48,4 +47,8 @@ export async function loginService(
       accessToken: jwt.sign({ email: data.email }),
     },
   };
+}
+
+export async function generateRefreshToken(): Promise<string> {
+  return uuidv4();
 }
