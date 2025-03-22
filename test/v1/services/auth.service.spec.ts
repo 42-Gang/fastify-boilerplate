@@ -1,12 +1,11 @@
-import { FastifyBaseLogger } from 'fastify';
 import { z } from 'zod';
-import { loginRequestSchema, signupRequestSchema } from '../../../src/v1/schemas/auth.schema';
-import { STATUS } from '../../../src/v1/constants/status';
-import { describe, expect, it, vi } from 'vitest';
-import prisma from '../mocks/mockPrisma';
-import { mockJwt } from '../mocks/mockjwt';
-import { mockLogger } from '../mocks/mockLogger';
-import { loginService, signupService } from '../../../src/v1/services/auth.service';
+import { loginRequestSchema, signupRequestSchema } from '../../../src/v1/schemas/auth.schema.js';
+import { STATUS } from '../../../src/v1/constants/status.js';
+import { describe, expect, it } from 'vitest';
+import prisma from '../mocks/mockPrisma.js';
+import { mockJwt } from '../mocks/mockJwt.js';
+import { mockLogger } from '../mocks/mockLogger.js';
+import { loginService, signupService } from '../../../src/v1/services/auth.service.js';
 
 describe('Auth Service', () => {
   describe('signupService', () => {
@@ -54,7 +53,6 @@ describe('Auth Service', () => {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      mockJwt.sign.mockReturnValue('tmp-access-token');
       const response = await loginService(data, mockLogger, mockJwt);
 
       expect(response).toEqual({

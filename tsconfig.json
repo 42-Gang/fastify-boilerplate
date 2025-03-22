@@ -1,23 +1,18 @@
 {
-	"extends": "fastify-tsconfig",
-	"compilerOptions": {
-		"outDir": "dist",
-		"rootDir": "./",
-		"baseUrl": "./",
-		"paths": {
-			"@src/*": [
-				"src/*"
-			],
-		},
-	},
-	"include": [
-		"@types",
-		"src/**/*.ts",
-		"src/**/*.d.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist",
-		"test"
-	]
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "@types",
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ]
 }
