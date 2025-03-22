@@ -5,10 +5,14 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"],
-    },
-    "noEmit": true,
-    "allowImportingTsExtensions": true
+      "@src/*": [
+        "src/*"
+      ]
+    }
   },
-  "include": ["@types", "src/**/*.ts"]
+  "include": [
+    "@types",
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ]
 }
