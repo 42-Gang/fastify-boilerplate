@@ -4,8 +4,13 @@ import tseslintPlugin from '@typescript-eslint/eslint-plugin';
 import tseslintParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
 import importPlugin from 'eslint-plugin-import';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import * as tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'node:url';
 
-export default [
+export default tseslint.config(
+  globalIgnores(['node_modules', 'dist', 'coverage', 'vitest.config.ts',
+    'eslint.config.mjs']),
   {
     // 이 config가 적용될 파일 대상
     files: ['**/*.{js,mjs,cjs,ts,tsx}'],
@@ -17,8 +22,8 @@ export default [
       },
       parser: tseslintParser, // TypeScript 파서를 설정
       parserOptions: {
-        sourceType: 'module', // ESM 모듈 시스템
-        project: './tsconfig.eslint.json', // tsconfig.json 파일을 참조
+        sourceType: 'module',
+        project: './tsconfig.json', // tsconfig 파일 경로
       },
     },
 
@@ -61,4 +66,4 @@ export default [
       },
     },
   },
-];
+);
