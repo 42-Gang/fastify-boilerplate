@@ -14,6 +14,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/',
     {
       schema: {
+        tags: ['auth'],
         body: signupRequestSchema,
         response: {
           201: signupResponseSchema,
@@ -28,6 +29,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/login',
     {
       schema: {
+        tags: ['auth'],
         body: loginRequestSchema,
         response: {
           201: loginResponseSchema,
