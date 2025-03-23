@@ -3,11 +3,7 @@ import fp from 'fastify-plugin';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
-import {
-  SWAGGER_INFO,
-  SWAGGER_SERVERS,
-  SWAGGER_UI_OPTIONS,
-} from '../v1/constants/swagger_config.js';
+import { SWAGGER_INFO, SWAGGER_SERVERS, SWAGGER_UI_OPTIONS } from '../constants/swagger_config.js';
 
 const swaggerOptions = {
   openapi: {
