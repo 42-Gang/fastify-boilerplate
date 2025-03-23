@@ -2,9 +2,9 @@ import { z } from 'zod';
 import { loginRequestSchema, signupRequestSchema } from '@src/v1/common/schemas/auth.schema.js';
 import { STATUS } from '@src/v1/common/constants/status.js';
 import { describe, expect, it } from 'vitest';
-import prisma from '../mocks/mockPrisma.js';
-import { mockJwt } from '../mocks/mockJwt.js';
-import { mockLogger } from '../mocks/mockLogger.js';
+import prisma from '../../../mocks/mockPrisma.js';
+import { mockJwt } from '../../../mocks/mockJwt.js';
+import { mockLogger } from '../../../mocks/mockLogger.js';
 import { loginService, signupService } from '@src/v1/apis/auth/auth.service.js';
 
 describe('Auth Service', () => {
