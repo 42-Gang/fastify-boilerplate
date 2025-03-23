@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import { findUserController } from '../../apis/users/users.controller.js';
-import { getUserParamsSchema } from '../../common/schemas/user.schema.js';
+import { getUserParamsSchema } from '@src/v1/apis/users/user.schema.js';
 import { addRoutes, Route } from '../../common/utils/router.js';
 
 export default async function usersRoutes(fastify: FastifyInstance) {

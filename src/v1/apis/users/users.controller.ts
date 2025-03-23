@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getUserParamsSchema } from '../../common/schemas/user.schema.js';
+import { getUserParamsSchema } from '@src/v1/apis/users/user.schema.js';
 import { ForbiddenException } from '../../common/exceptions/core.error.js';
 
 export async function findUserController(request: FastifyRequest, reply: FastifyReply) {

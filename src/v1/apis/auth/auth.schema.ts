@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { createResponseSchema } from './core.schema.js';
+import { createResponseSchema } from '../../common/schema/core.schema.js';
 
 // login request schema
 export const loginRequestSchema = z.object({

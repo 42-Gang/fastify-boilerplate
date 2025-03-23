@@ -6,7 +6,7 @@ import {
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '../../common/schemas/auth.schema.js';
+} from '@src/v1/apis/auth/auth.schema.js';
 import { addRoutes, Route } from '../../common/utils/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {

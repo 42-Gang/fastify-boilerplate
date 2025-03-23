@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { loginRequestSchema, signupRequestSchema } from '@src/v1/common/schemas/auth.schema.js';
+import { loginRequestSchema, signupRequestSchema } from '@src/v1/apis/auth/auth.schema.js';
 import { STATUS } from '@src/v1/common/constants/status.js';
 import { describe, expect, it } from 'vitest';
 import prisma from '../../../mocks/mockPrisma.js';
