@@ -1,49 +1,22 @@
 import { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
-import swagger from '@fastify/swagger';
-import swaggerUi from '@fastify/swagger-ui';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
+import { jsonSchemaTransform } from 'fastify-type-provider-zod';
+import { SWAGGER_INFO, SWAGGER_SECURITY, SWAGGER_SERVERS, SWAGGER_UI_OPTIONS } from '../v1/constants/swagger_config.js';
 
-const swaggerPlugin = async (fastify: FastifyInstance) => {
-    await fastify.register((swagger), {
-        openapi: {
-          openapi: '3.0.0',
-          info: {
-            title: 'Test swagger',
-            description: 'Testing the Fastify swagger API',
-            version: '0.1.0'
-          },
-          servers: [
-            {
-              url: 'http://localhost:3000',
-              description: 'Development server'
-            }
-          ],
-          tags: [
-            { name: 'user', description: 'User related end-points' },
-            { name: 'code', description: 'Code related end-points' }
-          ],
-          externalDocs: {
-            url: 'https://swagger.io',
-            description: 'Find more info here'
-          }
-        }
-      });
-
-    await fastify.register((swaggerUi), {
-      routePrefix: '/documentation',
-      uiConfig: {
-        docExpansion: 'full',
-        deepLinking: false
-      },
-      uiHooks: {
-        onRequest: function (request, reply, next) { next() },
-        preHandler: function (request, reply, next) { next() }
-      },
-      staticCSP: true,
-      transformStaticCSP: (header) => header,
-      transformSpecification: (swaggerObject, request, reply) => { return swaggerObject },
-      transformSpecificationClone: true
-    });
+const swaggerOptions = {
+  openapi: {
+    info: SWAGGER_INFO,
+    components: SWAGGER_SECURITY,
+    servers: SWAGGER_SERVERS,
+  },
+  hideUntagged: true,
+  exposeRoute: true,
+  transform: jsonSchemaTransform,
 };
 
-export default fp(swaggerPlugin);
+export default fp(async function (fastify: FastifyInstance) {  
+  fastify.register(fastifySwagger, swaggerOptions);
+  fastify.register(fastifySwaggerUi, SWAGGER_UI_OPTIONS);
+});
