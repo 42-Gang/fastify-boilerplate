@@ -1,12 +1,10 @@
-import path from 'node:path';
 import globals from 'globals';
 import tseslintPlugin from '@typescript-eslint/eslint-plugin';
 import tseslintParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
 import importPlugin from 'eslint-plugin-import';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { globalIgnores } from 'eslint/config';
 import * as tseslint from 'typescript-eslint';
-import { fileURLToPath } from 'node:url';
 
 export default tseslint.config(
   globalIgnores(['node_modules', 'dist', 'coverage', 'vitest.config.ts',
