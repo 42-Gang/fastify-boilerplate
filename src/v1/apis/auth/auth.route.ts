@@ -1,13 +1,13 @@
 import { FastifyInstance } from 'fastify';
 
-import { loginController, signupController } from '../controllers/auth.controller.js';
+import { loginController, signupController } from '../../apis/auth/auth.controller.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '../schemas/auth.schema.js';
-import { addRoutes, Route } from '../utils/router.js';
+} from '../../common/schemas/auth.schema.js';
+import { addRoutes, Route } from '../../common/utils/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
   const routes: Array<Route> = [

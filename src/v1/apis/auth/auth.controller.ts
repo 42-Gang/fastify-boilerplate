@@ -1,7 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { signupService, loginService, generateRefreshToken } from '../services/auth.service.js';
-import { loginRequestSchema, signupRequestSchema } from '../schemas/auth.schema.js';
+import {
+  signupService,
+  loginService,
+  generateRefreshToken,
+} from '../../apis/auth/auth.service.js';
+import { loginRequestSchema, signupRequestSchema } from '../../common/schemas/auth.schema.js';
 
 export async function signupController(request: FastifyRequest, reply: FastifyReply) {
   try {
