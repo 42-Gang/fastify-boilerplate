@@ -4,11 +4,12 @@ import fastifyJwt from '@fastify/jwt';
 
 import { UnAuthorizedException } from '../exceptions/core.error.js';
 import prisma from '../utils/prisma.js';
+import * as process from 'node:process';
 
 const jwtPlugin = async (fastify: FastifyInstance) => {
   fastify.register(fastifyJwt, {
-    secret: 'supersecret',
-    sign: { expiresIn: '5m' },
+    secret: process.env.JWT_SECRET || 'secret',
+    sign: { expiresIn: process.env.JWT_EXPIRES_IN || '5m' },
   });
 
   fastify.addHook('preHandler', async (request: FastifyRequest) => {
