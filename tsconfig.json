@@ -5,8 +5,9 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"],
-    },
-  },
-  "include": ["@types", "src/**/*.ts"]
+      "@src/*": [
+        "src/*"
+      ]
+    }
+  }
 }

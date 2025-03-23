@@ -2,8 +2,9 @@ import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fas
 
 import routeV1 from './v1/index.js';
 import { STATUS } from './v1/constants/status.js';
+import jwtPlugin from './v1/plugins/jwt-plugin.js';
 
-export default async function (fastify: FastifyInstance) {
+export default async function app(fastify: FastifyInstance) {
   fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     fastify.log.info(error.statusCode);
     fastify.log.info(error.code);
@@ -15,6 +16,7 @@ export default async function (fastify: FastifyInstance) {
       message: error.message,
     });
   });
-  
+
+  fastify.register(jwtPlugin);
   fastify.register(routeV1, { prefix: '/v1' });
 }

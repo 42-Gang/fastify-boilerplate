@@ -1,7 +1,9 @@
 import { z } from 'zod';
 import { FastifyBaseLogger } from 'fastify';
+import { JWT } from '@fastify/jwt';
+import { v4 as uuidv4 } from 'uuid';
 
-import prisma from '../../plugins/prisma.js';
+import prisma from '../utils/prisma.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
@@ -18,7 +20,7 @@ export async function signupService(
 
   const newUser = await prisma.user.create({
     data: {
-      nickname: data.name,
+      name: data.name,
       email: data.email,
       password_hash: data.password,
       two_factor_enabled: false,
@@ -36,14 +38,29 @@ export async function signupService(
 export async function loginService(
   data: z.infer<typeof loginRequestSchema>,
   logger: FastifyBaseLogger,
+  jwt: JWT,
 ): Promise<z.infer<typeof loginResponseSchema>> {
-  logger.info('data', data);
+  const foundUser = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+  if (!foundUser) {
+    return {
+      status: STATUS.ERROR,
+      message: 'User not found',
+    };
+  }
 
   return {
     status: STATUS.SUCCESS,
     message: 'User information retrieved successfully',
     data: {
-      accessToken: 'tmp-access-token',
+      accessToken: jwt.sign({ id: foundUser.id, email: foundUser.email }),
     },
   };
+}
+
+export async function generateRefreshToken(): Promise<string> {
+  return uuidv4();
 }

@@ -1,6 +1,6 @@
 export const SWAGGER_INFO = {
-    title: '🎾 PING PONG GANG API',
-    description: `
+  title: '🎾 PING PONG GANG API',
+  description: `
   PING PONG GANG API는 **사용자 인증, 게임 매칭, 랭킹 시스템** 등을 포함하는 **RESTful API**입니다.
   
   ---
@@ -15,22 +15,22 @@ export const SWAGGER_INFO = {
   
   본 API는 **Fastify + TypeScript** 기반으로 설계되었으며, **OpenAPI(Swagger)** 를 통해 문서화되었습니다.
   `,
-    version: '0.1.0',
-  };
-  
-  export const SWAGGER_SECURITY = {
-    securitySchemes: {
-      apiKey: {
-        type: 'apiKey',
-        name: 'Authorization',
-        in: 'header',
-      },
+  version: '0.1.0',
+};
+
+export const SWAGGER_SECURITY = {
+  securitySchemes: {
+    apiKey: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
     },
-  };
-  
-  export const SWAGGER_SERVERS = [{ url: 'http://localhost:3000/api' }];
-  
-  export const SWAGGER_UI_OPTIONS = {
-    routePrefix: '/docs',
-    exposeRoute: true,
-  };
+  },
+};
+
+export const SWAGGER_SERVERS = [{ url: 'http://localhost:3000/api' }];
+
+export const SWAGGER_UI_OPTIONS = {
+  routePrefix: '/docs',
+  exposeRoute: true,
+};

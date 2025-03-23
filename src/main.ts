@@ -18,7 +18,7 @@ function getLoggerOptions() {
       },
     };
   }
-  return { level: process.env.LOG_LEVEL ?? 'error' };
+  return { level: process.env.LOG_LEVEL || 'error' };
 }
 
 function createServer() {
@@ -35,7 +35,7 @@ function createServer() {
 
 async function startServer(server: Fastify.FastifyInstance) {
   try {
-    await server.listen({ port: process.env.PORT ?? 3000 });
+    await server.listen({ port: process.env.PORT || 3000 });
   } catch (err) {
     server.log.error(err);
     process.exit(1);
