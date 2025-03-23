@@ -9,7 +9,7 @@ import {
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '@src/v1/apis/auth/auth.schema.js';
+} from '../auth/auth.schema.js';
 import { STATUS } from '../..//common/constants/status.js';
 
 export async function signupService(

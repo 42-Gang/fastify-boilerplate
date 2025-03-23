@@ -6,7 +6,7 @@ import {
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '@src/v1/apis/auth/auth.schema.js';
+} from '../../apis/auth/auth.schema.js';
 import { addRoutes, Route } from '../../common/utils/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
@@ -17,6 +17,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
       handler: signupController,
       options: {
         schema: {
+          tags: ['auth'],
           body: signupRequestSchema,
           response: {
             201: signupResponseSchema,
@@ -30,6 +31,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
       handler: loginController,
       options: {
         schema: {
+          tags: ['auth'],
           body: loginRequestSchema,
           response: {
             201: loginResponseSchema,

@@ -3,6 +3,7 @@ import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 
 import app from './app.js';
+import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -47,7 +48,8 @@ async function init() {
   server.setSerializerCompiler(serializerCompiler);
   server.withTypeProvider<ZodTypeProvider>();
 
-  server.register(app, { prefix: '/api' });
+  await server.register(swaggerPlugin);
+  await server.register(app, { prefix: '/api' });
 
   closeWithGrace(
     {
