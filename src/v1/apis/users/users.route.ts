@@ -12,6 +12,7 @@ export default async function usersRoutes(fastify: FastifyInstance) {
       handler: findUserController,
       options: {
         schema: {
+          tags: ['users'],
           params: getUserParamsSchema,
         },
         auth: true,
