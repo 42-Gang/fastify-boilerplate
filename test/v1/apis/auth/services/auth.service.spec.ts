@@ -1,11 +1,14 @@
 import { z } from 'zod';
-import { loginRequestSchema, signupRequestSchema } from '@src/v1/apis/auth/auth.schema.js';
-import { STATUS } from '@src/v1/common/constants/status.js';
+import {
+  loginRequestSchema,
+  signupRequestSchema,
+} from '../../../../../src/v1/apis/auth/auth.schema.js';
+import { STATUS } from '../../../../../src/v1/common/constants/status.js';
 import { describe, expect, it, vi } from 'vitest';
 import { mockJwt } from '../../../mocks/mockJwt.js';
 import { mockLogger } from '../../../mocks/mockLogger.js';
-import { loginService, signupService } from '@src/v1/apis/auth/auth.service.js';
-import { UserRepository } from '@src/v1/repositories/user.repository.js';
+import { loginService, signupService } from '../../../../../src/v1/apis/auth/auth.service.js';
+import { UserRepository } from '../../../../../src/v1/repositories/user.repository.js';
 
 const mockedUserRepository: UserRepository = {
   create: vi.fn(),

@@ -1,4 +1,4 @@
-import { BaseRepository } from '@src/v1/repositories/base.repository.js';
+import { BaseRepository } from './base.repository.js';
 import { Prisma, PrismaClient, User } from '@prisma/client';
 
 export interface UserRepository
