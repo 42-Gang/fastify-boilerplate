@@ -1,4 +1,4 @@
-export interface BaseRepository<T, CreateInput = Partial<T>, UpdateInput = Partial<T>> {
+export interface BaseRepository<T, CreateInput, UpdateInput> {
   findById(id: number): Promise<T | null>;
 
   create(data: CreateInput): Promise<T>;
