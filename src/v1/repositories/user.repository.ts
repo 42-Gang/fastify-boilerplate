@@ -6,8 +6,12 @@ export interface UserRepository
   findByEmail(email: string): Promise<User | null>;
 }
 
-export class UserRepositoryImpl implements UserRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+export default class UserRepositoryImpl implements UserRepository {
+  private readonly prisma!: PrismaClient;
+
+  constructor(prisma: PrismaClient) {
+    this.prisma = prisma;
+  }
 
   create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({ data });

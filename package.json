@@ -10,7 +10,7 @@
     "watch:ts": "tsx watch src/main.ts",
     "build:ts": "tsc",
     "clean": "rm -rf dist",
-    "lint": "eslint . --ext .ts --fix",
+    "lint": "eslint ./src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "vitest",
     "test:watch": "vitest watch",

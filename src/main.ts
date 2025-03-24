@@ -4,6 +4,9 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-
 
 import app from './app.js';
 import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
+import { diContainer, fastifyAwilixPlugin } from '@fastify/awilix';
+import { asClass, asValue, Lifetime } from 'awilix';
+import prisma from './v1/common/utils/prisma.js';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -47,6 +50,25 @@ async function init() {
   server.setValidatorCompiler(validatorCompiler);
   server.setSerializerCompiler(serializerCompiler);
   server.withTypeProvider<ZodTypeProvider>();
+
+  server.register(fastifyAwilixPlugin, {
+    disposeOnClose: true,
+    disposeOnResponse: true,
+    strictBooleanEnforced: true,
+  });
+
+  diContainer.register({
+    prisma: asValue(prisma),
+  });
+  diContainer.loadModules(['./**/*.repository.js'], {
+    esModules: true,
+    formatName: 'camelCase',
+    resolverOptions: {
+      lifetime: Lifetime.SINGLETON,
+      register: asClass,
+      injectionMode: 'CLASSIC',
+    },
+  });
 
   await server.register(swaggerPlugin);
   await server.register(app, { prefix: '/api' });

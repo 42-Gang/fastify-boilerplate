@@ -8,7 +8,7 @@ import {
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '../auth/auth.schema.js';
+} from './auth.schema.js';
 import { STATUS } from '../../common/constants/status.js';
 import { UserRepository } from '../../repositories/user.repository.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
