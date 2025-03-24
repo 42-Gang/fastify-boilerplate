@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getUserParamsSchema } from '../schemas/user.schema.js';
-import { ForbiddenException } from '../exceptions/core.error.js';
+import { getUserParamsSchema } from '../users/user.schema.js';
+import { ForbiddenException } from '../../common/exceptions/core.error.js';
 
 export async function findUserController(request: FastifyRequest, reply: FastifyReply) {
   const params = getUserParamsSchema.parse(request.params);

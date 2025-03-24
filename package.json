@@ -19,7 +19,8 @@
     "prisma:migrate": "prisma migrate dev --name init && prisma generate",
     "prisma:reset": "prisma migrate reset --force && prisma generate",
     "prisma:deploy": "prisma migrate deploy && prisma generate",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "tree": "tree -I 'node_modules|dist|prisma|coverage|.git'"
   },
   "author": "",
   "license": "ISC",
