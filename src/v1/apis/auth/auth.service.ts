@@ -11,7 +11,7 @@ import {
 } from '../auth/auth.schema.js';
 import { STATUS } from '../../common/constants/status.js';
 import { UserRepository } from '../../repositories/user.repository.js';
-import { NotFoundException } from '@src/v1/common/exceptions/core.error.js';
+import { NotFoundException } from '../../common/exceptions/core.error.js';
 
 export async function signupService(
   data: z.infer<typeof signupRequestSchema>,
