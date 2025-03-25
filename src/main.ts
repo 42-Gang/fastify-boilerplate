@@ -55,6 +55,7 @@ async function setDiContainer(server: FastifyInstance) {
   diContainer.register({
     prisma: asValue(prisma),
     jwt: asValue(server.jwt),
+    logger: asValue(server.log),
   });
   await diContainer.loadModules(['./**/*.repository.js'], {
     esModules: true,

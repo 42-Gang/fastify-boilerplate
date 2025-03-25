@@ -11,14 +11,17 @@ import {
 import { STATUS } from '../../common/constants/status.js';
 import { UserRepository } from '../../repositories/user.repository.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
+import { FastifyBaseLogger } from 'fastify';
 
 export default class AuthService {
   private readonly userRepository: UserRepository;
   private readonly jwt: JWT;
+  private readonly logger: FastifyBaseLogger;
 
-  constructor(userRepository: UserRepository, jwt: JWT) {
+  constructor(userRepository: UserRepository, jwt: JWT, logger: FastifyBaseLogger) {
     this.userRepository = userRepository;
     this.jwt = jwt;
+    this.logger = logger;
   }
 
   async signup(
@@ -33,6 +36,8 @@ export default class AuthService {
     if (!newUser) {
       throw new NotFoundException('User not found');
     }
+
+    this.logger.info(`User ${newUser.id} created successfully`);
 
     return {
       status: STATUS.SUCCESS,
