@@ -1,33 +1,43 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { signupService, loginService, generateRefreshToken } from './auth.service.js';
 import { loginRequestSchema, signupRequestSchema } from './auth.schema.js';
-import { UserRepository } from '../../repositories/user.repository.js';
+import AuthService from './auth.service.js';
 
-export async function signupController(request: FastifyRequest, reply: FastifyReply) {
-  try {
-    const repository: UserRepository = request.diScope.resolve('userRepository');
-    const body = signupRequestSchema.parse(request.body);
-    const result = await signupService(body, request.log, repository);
-    reply.status(201).send(result);
-  } catch (error) {
-    reply.status(400).send({ error });
+export default class AuthController {
+  private readonly authService: AuthService;
+
+  constructor(authService: AuthService) {
+    this.authService = authService;
+    this.signup = this.signup.bind(this);
+    this.login = this.login.bind(this);
   }
-}
 
-export async function loginController(request: FastifyRequest, reply: FastifyReply) {
-  try {
-    const repository: UserRepository = request.diScope.resolve('userRepository');
-    const body = loginRequestSchema.parse(request.body);
-    const result = await loginService(body, request.log, request.server.jwt, repository);
-    const refreshToken = await generateRefreshToken();
+  async signup(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const body = signupRequestSchema.parse(request.body);
+      request.log.info(body, 'Signup request received');
+      const result = await this.authService.signup(body);
+      reply.status(201).send(result);
+    } catch (error) {
+      request.log.error(error, 'Error in signup');
+      reply.status(400).send({ error });
+    }
+  }
 
-    reply.header(
-      'set-cookie',
-      `refreshToken=${refreshToken}; HttpOnly; SameSite=Strict; Secure; Path=/; Max-Age=3600;`,
-    );
-    reply.status(200).send(result);
-  } catch (error) {
-    reply.status(401).send({ error });
+  async login(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const body = loginRequestSchema.parse(request.body);
+      const result = await this.authService.login(body);
+      const refreshToken = await this.authService.generateRefreshToken();
+
+      reply.header(
+        'set-cookie',
+        `refreshToken=${refreshToken}; HttpOnly; SameSite=Strict; Secure; Path=/; Max-Age=3600;`,
+      );
+      reply.status(200).send(result);
+    } catch (error) {
+      request.log.error(error, 'Error in login');
+      reply.status(401).send({ error });
+    }
   }
 }

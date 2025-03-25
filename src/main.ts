@@ -7,6 +7,7 @@ import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
 import { diContainer, fastifyAwilixPlugin } from '@fastify/awilix';
 import { asClass, asValue, Lifetime } from 'awilix';
 import prisma from './v1/common/utils/prisma.js';
+import jwtPlugin from './v1/common/plugins/jwt-plugin.js';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -53,12 +54,22 @@ async function setDiContainer(server: FastifyInstance) {
   });
   diContainer.register({
     prisma: asValue(prisma),
+    jwt: asValue(server.jwt),
   });
-  await diContainer.loadModules(['./**/*.repository.js', './**/*.controller.js'], {
+  await diContainer.loadModules(['./**/*.repository.js'], {
     esModules: true,
     formatName: 'camelCase',
     resolverOptions: {
       lifetime: Lifetime.SINGLETON,
+      register: asClass,
+      injectionMode: 'CLASSIC',
+    },
+  });
+  await diContainer.loadModules(['./**/*.controller.js', './**/*.service.js'], {
+    esModules: true,
+    formatName: 'camelCase',
+    resolverOptions: {
+      lifetime: 'SCOPED',
       register: asClass,
       injectionMode: 'CLASSIC',
     },
@@ -70,6 +81,8 @@ async function init() {
   server.setValidatorCompiler(validatorCompiler);
   server.setSerializerCompiler(serializerCompiler);
   server.withTypeProvider<ZodTypeProvider>();
+
+  await server.register(jwtPlugin);
   await setDiContainer(server);
   await server.register(swaggerPlugin);
   await server.register(app, { prefix: '/api' });
