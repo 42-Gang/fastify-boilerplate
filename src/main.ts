@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyInstance } from 'fastify';
 import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 
@@ -45,22 +45,16 @@ async function startServer(server: Fastify.FastifyInstance) {
   }
 }
 
-async function init() {
-  const server = createServer();
-  server.setValidatorCompiler(validatorCompiler);
-  server.setSerializerCompiler(serializerCompiler);
-  server.withTypeProvider<ZodTypeProvider>();
-
+async function setDiContainer(server: FastifyInstance) {
   server.register(fastifyAwilixPlugin, {
     disposeOnClose: true,
     disposeOnResponse: true,
     strictBooleanEnforced: true,
   });
-
   diContainer.register({
     prisma: asValue(prisma),
   });
-  diContainer.loadModules(['./**/*.repository.js'], {
+  await diContainer.loadModules(['./**/*.repository.js', './**/*.controller.js'], {
     esModules: true,
     formatName: 'camelCase',
     resolverOptions: {
@@ -69,7 +63,14 @@ async function init() {
       injectionMode: 'CLASSIC',
     },
   });
+}
 
+async function init() {
+  const server = createServer();
+  server.setValidatorCompiler(validatorCompiler);
+  server.setSerializerCompiler(serializerCompiler);
+  server.withTypeProvider<ZodTypeProvider>();
+  await setDiContainer(server);
   await server.register(swaggerPlugin);
   await server.register(app, { prefix: '/api' });
 
