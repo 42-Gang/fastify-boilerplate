@@ -4,7 +4,7 @@ import { getUserParamsSchema } from './user.schema.js';
 import { ForbiddenException } from '../../common/exceptions/core.error.js';
 
 export default class UsersController {
-  async findUser(request: FastifyRequest, reply: FastifyReply) {
+  findUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const params = getUserParamsSchema.parse(request.params);
     const user = request.me;
 
@@ -13,5 +13,5 @@ export default class UsersController {
     }
 
     reply.code(200).send('hello');
-  }
+  };
 }

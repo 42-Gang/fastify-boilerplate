@@ -12,7 +12,7 @@ export default class AuthController {
     this.login = this.login.bind(this);
   }
 
-  async signup(request: FastifyRequest, reply: FastifyReply) {
+  signup = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const body = signupRequestSchema.parse(request.body);
       request.log.info(body, 'Signup request received');
@@ -22,9 +22,9 @@ export default class AuthController {
       request.log.error(error, 'Error in signup');
       reply.status(400).send({ error });
     }
-  }
+  };
 
-  async login(request: FastifyRequest, reply: FastifyReply) {
+  login = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const body = loginRequestSchema.parse(request.body);
       const result = await this.authService.login(body);
@@ -39,5 +39,5 @@ export default class AuthController {
       request.log.error(error, 'Error in login');
       reply.status(401).send({ error });
     }
-  }
+  };
 }

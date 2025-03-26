@@ -7,7 +7,7 @@ export interface UserRepository
 }
 
 export default class UserRepositoryImpl implements UserRepository {
-  private readonly prisma!: PrismaClient;
+  private readonly prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
