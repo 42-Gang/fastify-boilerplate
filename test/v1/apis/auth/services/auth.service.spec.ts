@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockJwt } from '../../../mocks/mockJwt.js';
 import { mockLogger } from '../../../mocks/mockLogger.js';
 import { UserRepository } from '../../../../../src/v1/repositories/user.repository.js';
-import AuthService from '../../../../../src/v1/apis/auth/auth.service';
+import AuthService from '../../../../../src/v1/apis/auth/auth.service.js';
 
 const mockedUserRepository: UserRepository = {
   create: vi.fn(),
@@ -44,7 +44,7 @@ describe('Auth Service', () => {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      const response = await authService.signup(data, mockLogger, mockedUserRepository);
+      const response = await authService.signup(data);
 
       expect(response).toEqual({
         status: STATUS.SUCCESS,
@@ -70,7 +70,7 @@ describe('Auth Service', () => {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      const response = await authService.login(data, mockLogger, mockJwt, mockedUserRepository);
+      const response = await authService.login(data);
 
       expect(response).toEqual({
         status: STATUS.SUCCESS,
