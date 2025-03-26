@@ -4,11 +4,11 @@ import {
   signupRequestSchema,
 } from '../../../../../src/v1/apis/auth/auth.schema.js';
 import { STATUS } from '../../../../../src/v1/common/constants/status.js';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockJwt } from '../../../mocks/mockJwt.js';
 import { mockLogger } from '../../../mocks/mockLogger.js';
-import { loginService, signupService } from '../../../../../src/v1/apis/auth/auth.service.js';
 import { UserRepository } from '../../../../../src/v1/repositories/user.repository.js';
+import AuthService from '../../../../../src/v1/apis/auth/auth.service';
 
 const mockedUserRepository: UserRepository = {
   create: vi.fn(),
@@ -20,6 +20,12 @@ const mockedUserRepository: UserRepository = {
 };
 
 describe('Auth Service', () => {
+  let authService: AuthService;
+
+  beforeEach(() => {
+    authService = new AuthService(mockedUserRepository, mockJwt, mockLogger);
+  });
+
   describe('signupService', () => {
     it('should return success status and message', async () => {
       const data: z.infer<typeof signupRequestSchema> = {
@@ -38,7 +44,7 @@ describe('Auth Service', () => {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      const response = await signupService(data, mockLogger, mockedUserRepository);
+      const response = await authService.signup(data, mockLogger, mockedUserRepository);
 
       expect(response).toEqual({
         status: STATUS.SUCCESS,
@@ -64,7 +70,7 @@ describe('Auth Service', () => {
         created_at: new Date(),
         updated_at: new Date(),
       });
-      const response = await loginService(data, mockLogger, mockJwt, mockedUserRepository);
+      const response = await authService.login(data, mockLogger, mockJwt, mockedUserRepository);
 
       expect(response).toEqual({
         status: STATUS.SUCCESS,

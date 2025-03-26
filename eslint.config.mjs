@@ -21,7 +21,7 @@ export default tseslint.config(
       parser: tseslintParser, // TypeScript 파서를 설정
       parserOptions: {
         sourceType: 'module',
-        project: './tsconfig.json', // tsconfig 파일 경로
+        project: './tsconfig.eslint.json', // tsconfig 파일 경로
       },
     },
 
