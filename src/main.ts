@@ -70,7 +70,7 @@ async function setDiContainer(server: FastifyInstance) {
     esModules: true,
     formatName: 'camelCase',
     resolverOptions: {
-      lifetime: 'SCOPED',
+      lifetime: Lifetime.SINGLETON,
       register: asClass,
       injectionMode: 'CLASSIC',
     },
