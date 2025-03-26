@@ -4,13 +4,7 @@ import { loginRequestSchema, signupRequestSchema } from './auth.schema.js';
 import AuthService from './auth.service.js';
 
 export default class AuthController {
-  private readonly authService: AuthService;
-
-  constructor(authService: AuthService) {
-    this.authService = authService;
-    this.signup = this.signup.bind(this);
-    this.login = this.login.bind(this);
-  }
+  constructor(private readonly authService: AuthService) {}
 
   signup = async (request: FastifyRequest, reply: FastifyReply) => {
     try {

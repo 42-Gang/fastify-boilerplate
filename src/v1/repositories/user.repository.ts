@@ -7,11 +7,7 @@ export interface UserRepository
 }
 
 export default class UserRepositoryImpl implements UserRepository {
-  private readonly prisma: PrismaClient;
-
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
+  constructor(private readonly prisma: PrismaClient) {}
 
   create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({ data });

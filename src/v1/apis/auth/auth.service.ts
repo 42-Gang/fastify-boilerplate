@@ -14,15 +14,11 @@ import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { FastifyBaseLogger } from 'fastify';
 
 export default class AuthService {
-  private readonly userRepository: UserRepository;
-  private readonly jwt: JWT;
-  private readonly logger: FastifyBaseLogger;
-
-  constructor(userRepository: UserRepository, jwt: JWT, logger: FastifyBaseLogger) {
-    this.userRepository = userRepository;
-    this.jwt = jwt;
-    this.logger = logger;
-  }
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwt: JWT,
+    private readonly logger: FastifyBaseLogger,
+  ) {}
 
   async signup(
     data: z.infer<typeof signupRequestSchema>,
