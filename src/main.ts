@@ -57,7 +57,7 @@ async function init() {
 
   closeWithGrace(
     {
-      delay: process.env.FASTIFY_CLOSE_GRACE_DELAY ?? 500,
+      delay: process.env.FASTIFY_CLOSE_GRACE_DELAY || 500,
     },
     async ({ err }) => {
       if (err != null) {
