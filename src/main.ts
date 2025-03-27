@@ -52,14 +52,14 @@ async function init() {
   server.withTypeProvider<ZodTypeProvider>();
 
   await server.register(jwtPlugin);
-  await setDiContainer(server);
-  await server.register(swaggerPlugin);
-  await server.register(app, { prefix: '/api' });
   await server.register(fastifyRedis, {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379,
     logLevel: 'info',
   });
+  await setDiContainer(server);
+  await server.register(swaggerPlugin);
+  await server.register(app, { prefix: '/api' });
 
   closeWithGrace(
     {
