@@ -1,66 +1,67 @@
 import { z } from 'zod';
-import { FastifyBaseLogger } from 'fastify';
 import { JWT } from '@fastify/jwt';
 import { v4 as uuidv4 } from 'uuid';
 
-import prisma from '../..//common/utils/prisma.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '../auth/auth.schema.js';
-import { STATUS } from '../..//common/constants/status.js';
+} from './auth.schema.js';
+import { STATUS } from '../../common/constants/status.js';
+import { UserRepository } from '../../repositories/user.repository.js';
+import { NotFoundException } from '../../common/exceptions/core.error.js';
+import { FastifyBaseLogger } from 'fastify';
 
-export async function signupService(
-  data: z.infer<typeof signupRequestSchema>,
-  logger: FastifyBaseLogger,
-): Promise<z.infer<typeof signupResponseSchema>> {
-  logger.info('data', data);
+export default class AuthService {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwt: JWT,
+    private readonly logger: FastifyBaseLogger,
+  ) {}
 
-  const newUser = await prisma.user.create({
-    data: {
+  async signup(
+    data: z.infer<typeof signupRequestSchema>,
+  ): Promise<z.infer<typeof signupResponseSchema>> {
+    const newUser = await this.userRepository.create({
       name: data.name,
       email: data.email,
       password_hash: data.password,
       two_factor_enabled: false,
-    },
-  });
+    });
+    if (!newUser) {
+      throw new NotFoundException('User not found');
+    }
 
-  logger.info('New user created', newUser);
+    this.logger.info(`User ${newUser.id} created successfully`);
 
-  return {
-    status: STATUS.SUCCESS,
-    message: 'User information retrieved successfully',
-  };
-}
-
-export async function loginService(
-  data: z.infer<typeof loginRequestSchema>,
-  logger: FastifyBaseLogger,
-  jwt: JWT,
-): Promise<z.infer<typeof loginResponseSchema>> {
-  const foundUser = await prisma.user.findUnique({
-    where: {
-      email: data.email,
-    },
-  });
-  if (!foundUser) {
     return {
-      status: STATUS.ERROR,
-      message: 'User not found',
+      status: STATUS.SUCCESS,
+      message: 'User information retrieved successfully',
     };
   }
 
-  return {
-    status: STATUS.SUCCESS,
-    message: 'User information retrieved successfully',
-    data: {
-      accessToken: jwt.sign({ id: foundUser.id, email: foundUser.email }),
-    },
-  };
-}
+  async login(
+    data: z.infer<typeof loginRequestSchema>,
+  ): Promise<z.infer<typeof loginResponseSchema>> {
+    const foundUser = await this.userRepository.findByEmail(data.email);
+    if (!foundUser) {
+      return {
+        status: STATUS.ERROR,
+        message: 'User not found',
+      };
+    }
 
-export async function generateRefreshToken(): Promise<string> {
-  return uuidv4();
+    return {
+      status: STATUS.SUCCESS,
+      message: 'User information retrieved successfully',
+      data: {
+        accessToken: this.jwt.sign({ id: foundUser.id, email: foundUser.email }),
+      },
+    };
+  }
+
+  async generateRefreshToken(): Promise<string> {
+    return uuidv4();
+  }
 }

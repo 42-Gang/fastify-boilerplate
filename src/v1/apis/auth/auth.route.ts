@@ -1,20 +1,22 @@
 import { FastifyInstance } from 'fastify';
 
-import { loginController, signupController } from '../../apis/auth/auth.controller.js';
+import AuthController from '../../apis/auth/auth.controller.js';
 import {
   loginRequestSchema,
   loginResponseSchema,
   signupRequestSchema,
   signupResponseSchema,
-} from '../../apis/auth/auth.schema.js';
+} from './auth.schema.js';
 import { addRoutes, Route } from '../../common/utils/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
+  const authController: AuthController = fastify.diContainer.resolve('authController');
+
   const routes: Array<Route> = [
     {
       method: 'POST',
       url: '/',
-      handler: signupController,
+      handler: authController.signup,
       options: {
         schema: {
           tags: ['auth'],
@@ -28,7 +30,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     {
       method: 'POST',
       url: '/login',
-      handler: loginController,
+      handler: authController.login,
       options: {
         schema: {
           tags: ['auth'],
@@ -40,5 +42,5 @@ export default async function authRoutes(fastify: FastifyInstance) {
       },
     },
   ];
-  addRoutes(fastify, routes);
+  await addRoutes(fastify, routes);
 }

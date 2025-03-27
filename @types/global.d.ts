@@ -1,4 +1,5 @@
-// global.d.ts
+import { ProcessEnv } from 'process';
+
 export {};
 
 declare global {
