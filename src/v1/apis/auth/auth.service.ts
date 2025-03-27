@@ -11,11 +11,11 @@ import {
 import { STATUS } from '../../common/constants/status.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { FastifyBaseLogger } from 'fastify';
-import { UserRepository } from '../../repositories/persistent/interfaces/user.interface.js';
+import UserRepositoryInterface from '../../repositories/persistent/interfaces/user.repository.interface.js';
 
 export default class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly userRepository: UserRepositoryInterface,
     private readonly jwt: JWT,
     private readonly logger: FastifyBaseLogger,
   ) {}

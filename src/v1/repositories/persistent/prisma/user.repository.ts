@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import { UserRepository } from '../interfaces/user.interface.js';
+import UserRepositoryInterface from '../interfaces/user.repository.interface.js';
 
-export default class UserRepositoryPrisma implements UserRepository {
+export default class UserRepositoryPrisma implements UserRepositoryInterface {
   constructor(private readonly prisma: PrismaClient) {}
 
   create(data: Prisma.UserCreateInput): Promise<User> {
