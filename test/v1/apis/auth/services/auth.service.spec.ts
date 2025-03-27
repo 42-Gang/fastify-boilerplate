@@ -7,7 +7,7 @@ import { STATUS } from '../../../../../src/v1/common/constants/status.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockJwt } from '../../../mocks/mockJwt.js';
 import { mockLogger } from '../../../mocks/mockLogger.js';
-import { UserRepositoryInterface } from '../../../../../src/v1/repositories/persistent/interfaces/user.repository.interface';
+import { UserRepositoryInterface } from '../../../../../src/v1/repositories/persistent/interfaces/user.interface';
 import AuthService from '../../../../../src/v1/apis/auth/auth.service.js';
 
 const mockedUserRepository: UserRepositoryInterface = {

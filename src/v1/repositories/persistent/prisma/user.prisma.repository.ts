@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import { UserRepository } from '../interfaces/user.repository.interface.js';
+import { UserRepository } from '../interfaces/user.interface.js';
 
 export default class UserRepositoryPrisma implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}

@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from '../../repositories/persistent/interfaces/user.repository.interface.js';
+import { UserRepositoryInterface } from '../../repositories/persistent/interfaces/user.interface.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { z } from 'zod';
 import { FindUserResponseSchema } from './users.schema.js';
