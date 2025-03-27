@@ -9,13 +9,13 @@ import {
   signupResponseSchema,
 } from './auth.schema.js';
 import { STATUS } from '../../common/constants/status.js';
-import { UserRepository } from '../../repositories/user.repository.js';
+import { UserRepositoryInterface } from '../../repositories/persistent/interfaces/user.repository.interface.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { FastifyBaseLogger } from 'fastify';
 
 export default class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly userRepository: UserRepositoryInterface,
     private readonly jwt: JWT,
     private readonly logger: FastifyBaseLogger,
   ) {}

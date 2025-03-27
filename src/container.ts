@@ -9,10 +9,12 @@ export async function setDiContainer(server: FastifyInstance) {
     disposeOnResponse: true,
     strictBooleanEnforced: true,
   });
+
   diContainer.register({
     prisma: asValue(prisma),
     jwt: asValue(server.jwt),
     logger: asValue(server.log),
+    redisClient: asValue(server.redis),
   });
   await diContainer.loadModules(['./**/*.repository.js'], {
     esModules: true,

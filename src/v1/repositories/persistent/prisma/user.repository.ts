@@ -1,10 +1,5 @@
-import { BaseRepository } from './base.repository.js';
 import { Prisma, PrismaClient, User } from '@prisma/client';
-
-export interface UserRepository
-  extends BaseRepository<User, Prisma.UserCreateInput, Prisma.UserUpdateInput> {
-  findByEmail(email: string): Promise<User | null>;
-}
+import { UserRepository } from '../interfaces/user.repository.interface.js';
 
 export default class UserRepositoryPrisma implements UserRepository {
   constructor(private readonly prisma: PrismaClient) {}

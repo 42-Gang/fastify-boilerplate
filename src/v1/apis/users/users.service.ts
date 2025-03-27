@@ -1,11 +1,11 @@
-import { UserRepository } from '../../repositories/user.repository.js';
+import { UserRepositoryInterface } from '../../repositories/persistent/interfaces/user.repository.interface.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { z } from 'zod';
 import { FindUserResponseSchema } from './users.schema.js';
 import { STATUS } from '../../common/constants/status.js';
 
 export default class UsersService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepositoryInterface) {}
 
   async findUser(id: number): Promise<z.infer<typeof FindUserResponseSchema>> {
     const user = await this.userRepository.findById(id);
