@@ -19,6 +19,9 @@ declare global {
       DB_HOST: string;
       DB_PORT: string;
       DB_NAME: string;
+
+      REDIS_HOST: string;
+      REDIS_PORT: number;
     }
   }
 }

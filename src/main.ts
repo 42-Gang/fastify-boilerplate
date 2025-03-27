@@ -6,6 +6,7 @@ import app from './app.js';
 import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
 import jwtPlugin from './v1/common/plugins/jwt-plugin.js';
 import { setDiContainer } from './container.js';
+import { fastifyRedis } from '@fastify/redis';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -54,6 +55,11 @@ async function init() {
   await setDiContainer(server);
   await server.register(swaggerPlugin);
   await server.register(app, { prefix: '/api' });
+  await server.register(fastifyRedis, {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    logLevel: 'info',
+  });
 
   closeWithGrace(
     {
