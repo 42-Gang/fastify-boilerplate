@@ -12,7 +12,7 @@ const errorSchema = z.object({
 export const createResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
   z.object({
     status: z.nativeEnum(STATUS),
-    message: z.string(),
+    message: z.string().optional(),
     data: dataSchema.optional(),
     errors: z.array(errorSchema).optional(),
   });

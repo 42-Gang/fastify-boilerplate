@@ -1,13 +1,12 @@
-import Fastify, { FastifyInstance } from 'fastify';
+import Fastify from 'fastify';
 import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 
 import app from './app.js';
 import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
-import { diContainer, fastifyAwilixPlugin } from '@fastify/awilix';
-import { asClass, asValue, Lifetime } from 'awilix';
-import prisma from './v1/common/utils/prisma.js';
 import jwtPlugin from './v1/common/plugins/jwt-plugin.js';
+import { setDiContainer } from './container.js';
+import { fastifyRedis } from '@fastify/redis';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -46,37 +45,6 @@ async function startServer(server: Fastify.FastifyInstance) {
   }
 }
 
-async function setDiContainer(server: FastifyInstance) {
-  server.register(fastifyAwilixPlugin, {
-    disposeOnClose: true,
-    disposeOnResponse: true,
-    strictBooleanEnforced: true,
-  });
-  diContainer.register({
-    prisma: asValue(prisma),
-    jwt: asValue(server.jwt),
-    logger: asValue(server.log),
-  });
-  await diContainer.loadModules(['./**/*.repository.js'], {
-    esModules: true,
-    formatName: 'camelCase',
-    resolverOptions: {
-      lifetime: Lifetime.SINGLETON,
-      register: asClass,
-      injectionMode: 'CLASSIC',
-    },
-  });
-  await diContainer.loadModules(['./**/*.controller.js', './**/*.service.js'], {
-    esModules: true,
-    formatName: 'camelCase',
-    resolverOptions: {
-      lifetime: Lifetime.SINGLETON,
-      register: asClass,
-      injectionMode: 'CLASSIC',
-    },
-  });
-}
-
 async function init() {
   const server = createServer();
   server.setValidatorCompiler(validatorCompiler);
@@ -84,13 +52,18 @@ async function init() {
   server.withTypeProvider<ZodTypeProvider>();
 
   await server.register(jwtPlugin);
+  await server.register(fastifyRedis, {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    logLevel: 'trace',
+  });
   await setDiContainer(server);
   await server.register(swaggerPlugin);
   await server.register(app, { prefix: '/api' });
 
   closeWithGrace(
     {
-      delay: process.env.FASTIFY_CLOSE_GRACE_DELAY ?? 500,
+      delay: process.env.FASTIFY_CLOSE_GRACE_DELAY || 500,
     },
     async ({ err }) => {
       if (err != null) {

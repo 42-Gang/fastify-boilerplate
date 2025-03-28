@@ -5,9 +5,9 @@ import { STATUS } from './v1/common/constants/status.js';
 
 export default async function app(fastify: FastifyInstance) {
   fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
-    fastify.log.info(error.statusCode);
-    fastify.log.info(error.code);
-    fastify.log.info(error.message);
+    fastify.log.error(error.statusCode);
+    fastify.log.error(error.code);
+    fastify.log.error(error.message);
 
     const statusCode: number = error.statusCode || 500;
     reply.code(statusCode).send({

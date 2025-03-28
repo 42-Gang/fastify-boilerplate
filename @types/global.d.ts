@@ -11,6 +11,17 @@ declare global {
       JWT_SECRET: string;
       JWT_EXPIRES_IN: string;
       JWT_REFRESH_EXPIRES_IN: string;
+
+      DATABASE_URL: string;
+      DB_SYSTEM: string;
+      DB_USER: string;
+      DB_PASSWORD: string;
+      DB_HOST: string;
+      DB_PORT: string;
+      DB_NAME: string;
+
+      REDIS_HOST: string;
+      REDIS_PORT: number;
     }
   }
 }
