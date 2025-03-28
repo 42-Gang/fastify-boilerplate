@@ -9,7 +9,6 @@ export default class UsersController {
   findUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const params = getUserParamsSchema.parse(request.params);
     const result = await this.usersService.findUser(params.id);
-
     reply.code(200).send(result);
   };
 }

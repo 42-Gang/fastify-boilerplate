@@ -55,7 +55,7 @@ async function init() {
   await server.register(fastifyRedis, {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379,
-    logLevel: 'info',
+    logLevel: 'trace',
   });
   await setDiContainer(server);
   await server.register(swaggerPlugin);

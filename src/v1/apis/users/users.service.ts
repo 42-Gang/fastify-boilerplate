@@ -4,46 +4,42 @@ import { FindUserResponseSchema } from './users.schema.js';
 import { STATUS } from '../../common/constants/status.js';
 import UserRepositoryInterface from '../../repositories/interfaces/user.repository.interface.js';
 import { UserCacheInterface } from '../../cache/interfaces/user.cache.interface.js';
-import { FastifyBaseLogger } from 'fastify';
+import { User } from '@prisma/client';
 
 export default class UsersService {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly userCacheRepository: UserCacheInterface,
-    private readonly logger: FastifyBaseLogger,
   ) {}
+
+  private toResponseUser(user: User) {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
+    };
+  }
 
   async findUser(id: number): Promise<z.infer<typeof FindUserResponseSchema>> {
     const cachedUser = await this.userCacheRepository.getUserById(id);
     if (cachedUser) {
-      this.logger.info('User found in cache');
       return {
         status: STATUS.SUCCESS,
-        data: {
-          id: cachedUser.id,
-          name: cachedUser.name,
-          email: cachedUser.email,
-          createdAt: cachedUser.created_at,
-          updatedAt: cachedUser.updated_at,
-        },
+        data: this.toResponseUser(cachedUser),
       };
     }
-    const user = await this.userRepository.findById(id);
 
+    const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    await this.userCacheRepository.setUserById(id, user);
+    await this.userCacheRepository.setUserById(user.id, user);
 
     return {
       status: STATUS.SUCCESS,
-      data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.created_at,
-        updatedAt: user.updated_at,
-      },
+      data: this.toResponseUser(user),
     };
   }
 }
