@@ -11,7 +11,7 @@ import {
 import { STATUS } from '../../common/constants/status.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { FastifyBaseLogger } from 'fastify';
-import UserRepositoryInterface from '../../repositories/persistent/interfaces/user.repository.interface.js';
+import UserRepositoryInterface from '../../repositories/interfaces/user.repository.interface.js';
 
 export default class AuthService {
   constructor(

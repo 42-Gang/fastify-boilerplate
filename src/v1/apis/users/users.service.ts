@@ -2,8 +2,8 @@ import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { z } from 'zod';
 import { FindUserResponseSchema } from './users.schema.js';
 import { STATUS } from '../../common/constants/status.js';
-import UserRepositoryInterface from '../../repositories/persistent/interfaces/user.repository.interface.js';
-import { UserCacheInterface } from '../../repositories/volatile/interfaces/user.cache.interface.js';
+import UserRepositoryInterface from '../../repositories/interfaces/user.repository.interface.js';
+import { UserCacheInterface } from '../../cache/interfaces/user.cache.interface.js';
 import { FastifyBaseLogger } from 'fastify';
 
 export default class UsersService {
