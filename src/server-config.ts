@@ -1,25 +1,28 @@
 import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 import app from './app.js';
-import { registerJwtPlugin, registerRedisPlugin, registerSwaggerPlugin } from './plugins/index.js';
 import { setDiContainer } from './plugins/container.js';
 import { FastifyInstance } from 'fastify';
+import jwtPlugin from './plugins/jwt-plugin.js';
+import { fastifyRedis } from '@fastify/redis';
+import swaggerPlugin from './plugins/swagger-plugin.js';
+import { Server } from 'socket.io';
 
 export async function configureServer(server: FastifyInstance) {
-  server.setValidatorCompiler(validatorCompiler);
-  server.setSerializerCompiler(serializerCompiler);
-  server.withTypeProvider<ZodTypeProvider>();
+  server.setValidatorCompiler(validatorCompiler); // Fastify 유효성 검사기 설정
+  server.setSerializerCompiler(serializerCompiler); // 응답 데이터 직렬화 설정
+  server.withTypeProvider<ZodTypeProvider>(); // Zod 타입 프로바이더 설정
 }
 
 export async function registerPlugins(server: FastifyInstance) {
-  await registerJwtPlugin(server);
-  await registerRedisPlugin(server);
-  await setDiContainer(server);
-  await registerSwaggerPlugin(server);
-  await server.register(app, { prefix: '/api' });
+  await registerJwtPlugin(server); // JWT 플러그인 등록
+  await registerRedisPlugin(server); // Redis 플러그인 등록
+  await setDiContainer(server); // 의존성 주입 컨테이너 설정
+  await registerSwaggerPlugin(server); // Swagger 플러그인 등록
+  await server.register(app, { prefix: '/api' }); // REST API 라우트 등록
 }
 
-export async function setupGracefulShutdown(server: FastifyInstance) {
+export async function setupGracefulShutdown(server: FastifyInstance, socket: Server) {
   closeWithGrace(
     {
       delay: process.env.FASTIFY_CLOSE_GRACE_DELAY || 500,
@@ -29,6 +32,23 @@ export async function setupGracefulShutdown(server: FastifyInstance) {
         server.log.error(err);
       }
       await server.close();
+      await socket.close();
     },
   );
+}
+
+async function registerJwtPlugin(server: FastifyInstance) {
+  await server.register(jwtPlugin);
+}
+
+async function registerRedisPlugin(server: FastifyInstance) {
+  await server.register(fastifyRedis, {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    logLevel: 'trace',
+  });
+}
+
+async function registerSwaggerPlugin(server: FastifyInstance) {
+  await server.register(swaggerPlugin);
 }

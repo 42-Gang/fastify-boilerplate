@@ -16,4 +16,5 @@ export function createSocketServer(fastify: FastifyInstance) {
     });
   });
   registerSocketGateway(socket);
+  return socket;
 }
