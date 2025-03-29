@@ -8,13 +8,11 @@ export const gotClient: HttpClient = {
       timeout: { request: 10000 },
     });
 
-    const response = await client(options.url, {
+    return client(options.url, {
       method: options.method,
       json: options.body,
       searchParams: options.queryParams,
       headers: options.headers,
     });
-
-    return response;
-  }
+  },
 };
