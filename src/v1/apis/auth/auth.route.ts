@@ -7,7 +7,7 @@ import {
   signupRequestSchema,
   signupResponseSchema,
 } from './auth.schema.js';
-import { addRoutes, Route } from '../../common/utils/router.js';
+import { addRoutes, Route } from '../../../plugins/router.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
   const authController: AuthController = fastify.diContainer.resolve('authController');

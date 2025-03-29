@@ -1,10 +1,8 @@
 import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 import app from './app.js';
-import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
-import jwtPlugin from './v1/common/plugins/jwt-plugin.js';
+import { registerJwtPlugin, registerRedisPlugin, registerSwaggerPlugin } from './plugins/index.js';
 import { setDiContainer } from './container.js';
-import { fastifyRedis } from '@fastify/redis';
 import { FastifyInstance } from 'fastify';
 
 export async function configureServer(server: FastifyInstance) {
@@ -14,14 +12,10 @@ export async function configureServer(server: FastifyInstance) {
 }
 
 export async function registerPlugins(server: FastifyInstance) {
-  await server.register(jwtPlugin);
-  await server.register(fastifyRedis, {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379,
-    logLevel: 'trace',
-  });
+  await registerJwtPlugin(server);
+  await registerRedisPlugin(server);
   await setDiContainer(server);
-  await server.register(swaggerPlugin);
+  await registerSwaggerPlugin(server);
   await server.register(app, { prefix: '/api' });
 }
 

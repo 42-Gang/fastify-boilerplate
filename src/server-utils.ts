@@ -1,5 +1,17 @@
 import Fastify from 'fastify';
 
+export function createServer() {
+  return Fastify({
+    logger: getLoggerOptions(),
+    ajv: {
+      customOptions: {
+        coerceTypes: 'array',
+        removeAdditional: 'all',
+      },
+    },
+  });
+}
+
 export function getLoggerOptions() {
   if (process.stdout.isTTY) {
     return {
@@ -14,18 +26,6 @@ export function getLoggerOptions() {
     };
   }
   return { level: process.env.LOG_LEVEL || 'error' };
-}
-
-export function createServer() {
-  return Fastify({
-    logger: getLoggerOptions(),
-    ajv: {
-      customOptions: {
-        coerceTypes: 'array',
-        removeAdditional: 'all',
-      },
-    },
-  });
 }
 
 export async function startServer(server: Fastify.FastifyInstance) {

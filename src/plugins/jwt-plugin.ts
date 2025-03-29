@@ -2,8 +2,8 @@ import { FastifyInstance, FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import fastifyJwt from '@fastify/jwt';
 
-import { UnAuthorizedException } from '../exceptions/core.error.js';
-import prisma from '../utils/prisma.js';
+import { UnAuthorizedException } from '../v1/common/exceptions/core.error.js';
+import prisma from './prisma.js';
 import * as process from 'node:process';
 
 const jwtPlugin = async (fastify: FastifyInstance) => {
