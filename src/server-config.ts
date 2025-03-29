@@ -5,7 +5,7 @@ import { setDiContainer } from './plugins/container.js';
 import { FastifyInstance } from 'fastify';
 import jwtPlugin from './plugins/jwt-plugin.js';
 import { fastifyRedis } from '@fastify/redis';
-import swaggerPlugin from './plugins/swagger-plugin.js';
+import swaggerPlugin from './plugins/swagger/swagger-plugin.js';
 import { Server } from 'socket.io';
 
 export async function configureServer(server: FastifyInstance) {
