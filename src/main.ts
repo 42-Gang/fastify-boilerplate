@@ -7,6 +7,7 @@ import swaggerPlugin from './v1/common/utils/swagger-plugin.js';
 import jwtPlugin from './v1/common/plugins/jwt-plugin.js';
 import { setDiContainer } from './container.js';
 import { fastifyRedis } from '@fastify/redis';
+import { createSocketServer } from './socket.js';
 
 function getLoggerOptions() {
   if (process.stdout.isTTY) {
@@ -75,6 +76,8 @@ async function init() {
 
   await server.ready();
   await startServer(server);
+
+  createSocketServer(server);
 }
 
 init();
