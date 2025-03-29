@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import { FastifyInstance } from 'fastify';
-import { registerSocketGateway } from './v1/sockets/gateway.js';
+import { registerSocketGateway } from '../v1/sockets/gateway.js';
 
 export function createSocketServer(fastify: FastifyInstance) {
   const socket = new Server(fastify.server, {
@@ -16,4 +16,5 @@ export function createSocketServer(fastify: FastifyInstance) {
     });
   });
   registerSocketGateway(socket);
+  return socket;
 }
