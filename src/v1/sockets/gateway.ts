@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import chatNamespace from './namespaces/chat.namespace.js';
+import chatNamespace from './chat/chat.namespace.js';
 
 export const registerSocketGateway = (io: Server) => {
   io.on('connection', (socket) => {
