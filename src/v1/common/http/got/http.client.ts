@@ -15,6 +15,6 @@ export const gotClient: HttpClient = {
       headers: options.headers,
     });
 
-    return response.body;
+    return response;
   }
 };
