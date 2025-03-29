@@ -18,22 +18,16 @@ export async function setDiContainer(server: FastifyInstance) {
     redisClient: asValue(server.redis),
     httpClient: asValue(gotClient),
   });
-  await diContainer.loadModules(['./**/*.repository.js'], {
-    esModules: true,
-    formatName: 'camelCase',
-    resolverOptions: {
-      lifetime: Lifetime.SINGLETON,
-      register: asClass,
-      injectionMode: 'CLASSIC',
+  await diContainer.loadModules(
+    ['./**/*.repository.js', './**/*.controller.js', './**/*.service.js'],
+    {
+      esModules: true,
+      formatName: 'camelCase',
+      resolverOptions: {
+        lifetime: Lifetime.SINGLETON,
+        register: asClass,
+        injectionMode: 'CLASSIC',
+      },
     },
-  });
-  await diContainer.loadModules(['./**/*.controller.js', './**/*.service.js'], {
-    esModules: true,
-    formatName: 'camelCase',
-    resolverOptions: {
-      lifetime: Lifetime.SINGLETON,
-      register: asClass,
-      injectionMode: 'CLASSIC',
-    },
-  });
+  );
 }
