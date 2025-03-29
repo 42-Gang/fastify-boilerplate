@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { HttpClient } from '../../../../../src/plugins/http/interface/http.client.interface.js';
-import { gotClient } from '../../../../../src/plugins/http/got/http.client.js';
+import { HttpClient } from '../../../../src/plugins/http/interface/http.client.interface';
+import { gotClient } from '../../../../src/plugins/http/got/http.client';
 
 describe('HTTP Client', () => {
   it('GET jsonplaceholder.typicode.com', async () => {
