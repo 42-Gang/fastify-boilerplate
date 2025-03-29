@@ -3,7 +3,7 @@ import { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fas
 import routeV1 from './v1/index.js';
 import { STATUS } from './v1/common/constants/status.js';
 
-export default async function app(fastify: FastifyInstance) {
+function setErrorHandler(fastify: FastifyInstance) {
   fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     fastify.log.error(error.statusCode);
     fastify.log.error(error.code);
@@ -15,6 +15,10 @@ export default async function app(fastify: FastifyInstance) {
       message: error.message,
     });
   });
+}
+
+export default async function app(fastify: FastifyInstance) {
+  setErrorHandler(fastify);
 
   fastify.register(routeV1, { prefix: '/v1' });
 }
