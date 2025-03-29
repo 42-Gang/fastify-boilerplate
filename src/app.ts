@@ -5,9 +5,7 @@ import { STATUS } from './v1/common/constants/status.js';
 
 function setErrorHandler(fastify: FastifyInstance) {
   fastify.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
-    fastify.log.error(error.statusCode);
-    fastify.log.error(error.code);
-    fastify.log.error(error.message);
+    fastify.log.error(error);
 
     const statusCode: number = error.statusCode || 500;
     reply.code(statusCode).send({
