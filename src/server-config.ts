@@ -2,7 +2,7 @@ import closeWithGrace from 'close-with-grace';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 import app from './app.js';
 import { registerJwtPlugin, registerRedisPlugin, registerSwaggerPlugin } from './plugins/index.js';
-import { setDiContainer } from './container.js';
+import { setDiContainer } from './plugins/container.js';
 import { FastifyInstance } from 'fastify';
 
 export async function configureServer(server: FastifyInstance) {

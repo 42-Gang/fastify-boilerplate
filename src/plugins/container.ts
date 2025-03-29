@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { diContainer, fastifyAwilixPlugin } from '@fastify/awilix';
 import { asClass, asValue, Lifetime } from 'awilix';
-import prisma from './plugins/prisma.js';
-import { gotClient } from './plugins/http/got/http.client.js';
+import prisma from './prisma.js';
+import { gotClient } from './http/got/http.client.js';
 
 export async function setDiContainer(server: FastifyInstance) {
   server.register(fastifyAwilixPlugin, {
