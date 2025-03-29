@@ -1,8 +1,8 @@
-import got from 'got';
+import got, { Response } from 'got';
 import { HttpClient, HttpRequestOptions } from '../interface/http.client.interface.js';
 
 export const gotClient: HttpClient = {
-  async request(options: HttpRequestOptions): Promise<any> {
+  async request(options: HttpRequestOptions): Promise<Response> {
     const client = got.extend({
       responseType: 'json',
       timeout: { request: 10000 },
