@@ -25,7 +25,7 @@ export async function registerPlugins(server: FastifyInstance) {
 export async function setupGracefulShutdown(server: FastifyInstance, socket: Server) {
   closeWithGrace(
     {
-      delay: process.env.FASTIFY_CLOSE_GRACE_DELAY || 500,
+      delay: Number(process.env.FASTIFY_CLOSE_GRACE_PERIOD) || 500,
     },
     async ({ err }) => {
       if (err != null) {
@@ -44,7 +44,7 @@ async function registerJwtPlugin(server: FastifyInstance) {
 async function registerRedisPlugin(server: FastifyInstance) {
   await server.register(fastifyRedis, {
     host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379,
+    port: Number(process.env.REDIS_PORT) || 6379,
     logLevel: 'trace',
   });
 }

@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyInstance } from 'fastify';
 
 export function createServer() {
   return Fastify({
@@ -25,12 +25,12 @@ export function getLoggerOptions() {
       },
     };
   }
-  return { level: process.env.LOG_LEVEL || 'error' };
+  return { level: process.env.FASTIFY_LOG_LEVEL || 'error' };
 }
 
-export async function startServer(server: Fastify.FastifyInstance) {
+export async function startServer(server: FastifyInstance) {
   try {
-    await server.listen({ port: process.env.PORT || 3000 });
+    await server.listen({ port: Number(process.env.FASTIFY_PORT) || 3000 });
   } catch (err) {
     server.log.error(err);
     process.exit(1);

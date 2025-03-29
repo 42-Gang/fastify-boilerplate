@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "npm run build:ts && dotenv -e .env -- node dist/src/main.js",
-    "dev": "tsx watch src/main.ts",
+    "prod": "npm run build:ts && dotenv -e .env.prod -- node dist/src/main.js",
+    "dev": "dotenv -e .env.dev -- tsx watch src/main.ts",
     "run:ts": "tsx src/main.ts",
     "watch:ts": "tsx watch src/main.ts",
     "build:ts": "tsc",
