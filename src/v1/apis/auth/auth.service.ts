@@ -12,12 +12,14 @@ import { STATUS } from '../../common/constants/status.js';
 import { NotFoundException } from '../../common/exceptions/core.error.js';
 import { FastifyBaseLogger } from 'fastify';
 import UserRepositoryInterface from '../../storage/database/interfaces/user.repository.interface.js';
+import { HttpClient } from 'src/v1/common/http/interface/http.client.interface.js';
 
 export default class AuthService {
   constructor(
     private readonly userRepository: UserRepositoryInterface,
     private readonly jwt: JWT,
     private readonly logger: FastifyBaseLogger,
+    private readonly httpClient: HttpClient,
   ) {}
 
   async signup(
@@ -33,8 +35,17 @@ export default class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    this.logger.info(`User ${newUser.id} created successfully`);
+    // ✅ 테스트용 HTTP 요청
+    const fetchResponse = await this.httpClient.request({
+      url: `http://localhost:3000/users/${newUser.id}`,
+      method: 'GET',
+    });
 
+    console.log('[DEBUG] 외부 요청 응답:', fetchResponse);
+    // ✅ 
+
+    this.logger.info(`User ${newUser.id} created successfully`);
+    
     return {
       status: STATUS.SUCCESS,
       message: 'User information retrieved successfully',
@@ -51,7 +62,6 @@ export default class AuthService {
         message: 'User not found',
       };
     }
-
     return {
       status: STATUS.SUCCESS,
       message: 'User information retrieved successfully',
