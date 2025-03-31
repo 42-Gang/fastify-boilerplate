@@ -19,7 +19,7 @@ export async function setDiContainer(server: FastifyInstance) {
     httpClient: asValue(gotClient),
   });
   await diContainer.loadModules(
-    ['./**/*.repository.js', './**/*.controller.js', './**/*.service.js'],
+    [ 'src/**/*.repository.ts', 'src/**/*.controller.ts', 'src/**/*.service.ts'],
     {
       esModules: true,
       formatName: 'camelCase',
