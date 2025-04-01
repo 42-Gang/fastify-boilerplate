@@ -18,8 +18,12 @@ export async function setDiContainer(server: FastifyInstance) {
     redisClient: asValue(server.redis),
     httpClient: asValue(gotClient),
   });
+
+  const NODE_EXTENSION = process.env.NODE_ENV == 'dev'? "ts" : "js"; 
   await diContainer.loadModules(
-    ['./**/*.repository.js', './**/*.controller.js', './**/*.service.js'],
+    [
+      `./**/src/**/*.repository.${NODE_EXTENSION}`, `./**/src/**/*.controller.${NODE_EXTENSION}`, `./**/src/**/*.service.${NODE_EXTENSION}`,
+    ],
     {
       esModules: true,
       formatName: 'camelCase',
